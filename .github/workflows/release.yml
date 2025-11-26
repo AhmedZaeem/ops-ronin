@@ -1,0 +1,95 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Create GitHub Release
+    
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        check-latest: true
+    
+    - name: Build for multiple platforms
+      run: |
+        mkdir -p dist
+        
+        # Linux AMD64
+        GOOS=linux GOARCH=amd64 go build -o dist/ops-ronin-linux-amd64 main.go
+        
+        # Linux ARM64
+        GOOS=linux GOARCH=arm64 go build -o dist/ops-ronin-linux-arm64 main.go
+        
+        # macOS AMD64
+        GOOS=darwin GOARCH=amd64 go build -o dist/ops-ronin-darwin-amd64 main.go
+        
+        # macOS ARM64 (M1/M2)
+        GOOS=darwin GOARCH=arm64 go build -o dist/ops-ronin-darwin-arm64 main.go
+        
+        # Windows AMD64
+        GOOS=windows GOARCH=amd64 go build -o dist/ops-ronin-windows-amd64.exe main.go
+        
+        # Create checksums
+        cd dist
+        sha256sum * > checksums.txt
+    
+    - name: Generate changelog
+      id: changelog
+      run: |
+        echo "## What's Changed" > CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        
+        # Get commits since last tag
+        LAST_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+        if [ -n "$LAST_TAG" ]; then
+          git log $LAST_TAG..HEAD --oneline --pretty="format:- %s" >> CHANGELOG.md
+        else
+          echo "- Initial release of Ops-Ronin Universal TUI Engine" >> CHANGELOG.md
+        fi
+        
+        echo "" >> CHANGELOG.md
+        echo "## Docker Images" >> CHANGELOG.md
+        echo "" >> CHANGELOG.md
+        echo "\`\`\`bash" >> CHANGELOG.md
+        echo "docker pull tdkps/ops-ronin:${GITHUB_REF#refs/tags/}" >> CHANGELOG.md
+        echo "docker pull tdkps/ops-ronin:latest" >> CHANGELOG.md
+        echo "\`\`\`" >> CHANGELOG.md
+        
+        # Set output for GitHub release
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        cat CHANGELOG.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        body: ${{ steps.changelog.outputs.CHANGELOG }}
+        files: |
+          dist/ops-ronin-linux-amd64
+          dist/ops-ronin-linux-arm64
+          dist/ops-ronin-darwin-amd64
+          dist/ops-ronin-darwin-arm64
+          dist/ops-ronin-windows-amd64.exe
+          dist/checksums.txt
+          menu.yaml
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

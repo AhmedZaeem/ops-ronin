@@ -3,10 +3,14 @@
 A beautiful and powerful Terminal User Interface (TUI) for managing Docker container operations. Execute commands across multiple containers with ease using an intuitive menu-driven interface.
 
 [![Docker Hub](https://img.shields.io/docker/v/tdkps/ops-ronin?label=Docker%20Hub)](https://hub.docker.com/r/tdkps/ops-ronin)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/yourusername/ops-ronin)](https://github.com/yourusername/ops-ronin)
-[![License](https://img.shields.io/github/license/yourusername/ops-ronin)](LICENSE)
+[![Docker Pulls](https://img.shields.io/docker/pulls/tdkps/ops-ronin)](https://hub.docker.com/r/tdkps/ops-ronin)
+[![Build Status](https://github.com/AhmedZaeem/ops-ronin/actions/workflows/deploy.yml/badge.svg)](https://github.com/AhmedZaeem/ops-ronin/actions)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/AhmedZaeem/ops-ronin)](https://github.com/AhmedZaeem/ops-ronin)
+[![License](https://img.shields.io/github/license/AhmedZaeem/ops-ronin)](LICENSE)
 
 ## 🚀 Quick Start with Docker
+
+> **🤖 Automated Updates**: This Docker image is automatically built and deployed from the main branch. Every merge triggers a new build with the latest features and security patches.
 
 ### Pull and Run
 ```bash
@@ -133,7 +137,7 @@ EOF
 docker run -it --rm \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v $(pwd)/menu.yaml:/root/menu.yaml \
-  yourusername/ops-ronin:latest
+  tdkps/ops-ronin:latest
 ```
 
 ### Development Environment
@@ -159,7 +163,7 @@ services:
       - ./backend:/app
 
   ops-ronin:
-    image: yourusername/ops-ronin:latest
+    image: tdkps/ops-ronin:latest
     container_name: ops-ronin
     stdin_open: true
     tty: true
@@ -203,7 +207,7 @@ EOF
 ### "Docker not accessible" Error
 ```bash
 # Ensure Docker socket is mounted
-docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock yourusername/ops-ronin:latest
+docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock tdkps/ops-ronin:latest
 
 # Check Docker access
 docker version
@@ -213,7 +217,7 @@ docker version
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ops-ronin.git
+git clone https://github.com/AhmedZaeem/ops-ronin.git
 cd ops-ronin
 
 # Build

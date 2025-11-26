@@ -1,0 +1,66 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate Pull Request
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        check-latest: true
+    
+    - name: Cache Go modules
+      uses: actions/cache@v4
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    
+    - name: Install dependencies
+      run: go mod download
+    
+    - name: Run tests
+      run: go test -v ./...
+    
+    - name: Test build
+      run: go build -o ops-ronin main.go
+    
+    - name: Test Docker build
+      run: docker build -t ops-ronin-test .
+    
+    - name: Validate configuration examples
+      run: |
+        if ./ops-ronin --help 2>&1 | grep -q "menu.yaml not found"; then
+          echo "✅ Configuration validation works"
+        else
+          echo "❌ Configuration validation failed"
+          exit 1
+        fi
+    
+    - name: Code quality check
+      run: |
+        echo "Checking for comments in Go files..."
+        if find . -name "*.go" -not -path "./vendor/*" -exec grep -l "^[[:space:]]*\/\/" {} \; | grep -q .; then
+          echo "❌ Comments found in Go files"
+          find . -name "*.go" -not -path "./vendor/*" -exec grep -l "^[[:space:]]*\/\/" {} \;
+          exit 1
+        else
+          echo "✅ No comments found in Go files"
+        fi
+    
+    - name: Security check
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: 'results.sarif'
+      continue-on-error: true
