@@ -1,0 +1,15 @@
+.git
+.github
+.idea
+*.md
+test-scripts
+test-integration.sh
+quickstart.sh
+menu-builder.sh
+docker-compose.yml
+menu.yaml.example
+coverage.out
+coverage.html
+ops-ronin
+*.backup*
+

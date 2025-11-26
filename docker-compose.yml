@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  ops-ronin:
+    image: tdkps/ops-ronin:latest
+    container_name: ops-ronin
+    stdin_open: true
+    tty: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./menu.yaml:/root/menu.yaml
+    restart: unless-stopped

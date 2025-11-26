@@ -1,0 +1,21 @@
+project: "ops-ronin-example"
+theme: "ronin"
+
+menu:
+  - title: "System Operations"
+    items:
+      - label: "Check System Info"
+        container: "my-app"
+        command: "uname -a"
+
+      - label: "Check Disk Usage"
+        container: "my-app"
+        command: "df -h"
+
+      - label: "Show Memory Usage"
+        container: "my-app"
+        command: "free -h"
+
+      - label: "List Running Processes"
+        container: "my-app"
+        command: "ps aux | head -10"
