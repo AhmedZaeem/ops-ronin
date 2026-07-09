@@ -1,0 +1,10 @@
+# Known HIGH CVEs in github.com/docker/docker (Moby) Go SDK.
+# The upstream advisory lists Docker Engine/Moby 29.3.1 as the patched version,
+# but the corresponding Go module tag has not yet been published. Ops Ronin is
+# pinned to the latest available module version (v28.5.2).
+# Remove these entries once github.com/docker/docker@v29.3.1+incompatible
+# (or newer) is available and go.mod has been updated.
+vulnerabilities:
+  - CVE-2026-34040
+  - CVE-2026-41567
+  - CVE-2026-42306
