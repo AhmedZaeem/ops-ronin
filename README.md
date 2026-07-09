@@ -1,5 +1,9 @@
 # Ops Ronin V2
 
+<p align="center">
+  <img src="assets/ronin.svg" alt="Ops Ronin" width="180" height="180">
+</p>
+
 [![Go Version](https://img.shields.io/badge/Go-%3E%3D1.26-00ADD8?logo=go)](https://go.dev)
 [![Docker Image](https://img.shields.io/docker/v/tdkps/ops-ronin?sort=semver)](https://hub.docker.com/r/tdkps/ops-ronin)
 [![CI](https://github.com/AhmedZaeem/ops-ronin/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/AhmedZaeem/ops-ronin/actions/workflows/docker-publish.yml)

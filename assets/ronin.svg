@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1b26;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#24283b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="visor" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7AA2F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#BB9AF7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bg)" stroke="#7AA2F7" stroke-width="12"/>
+
+  <!-- Ronin hood silhouette -->
+  <path d="M256 100
+           C 180 100, 120 160, 120 240
+           C 120 320, 160 380, 220 400
+           L 292 400
+           C 352 380, 392 320, 392 240
+           C 392 160, 332 100, 256 100 Z"
+        fill="#16161e" stroke="#565F89" stroke-width="6"/>
+
+  <!-- Visor / faceplate -->
+  <path d="M256 180
+           C 200 180, 170 220, 170 260
+           C 170 310, 210 350, 256 350
+           C 302 350, 342 310, 342 260
+           C 342 220, 312 180, 256 180 Z"
+        fill="url(#visor)" opacity="0.9"/>
+
+  <!-- Eyes -->
+  <rect x="195" y="250" width="46" height="18" rx="4" fill="#F7768E"/>
+  <rect x="271" y="250" width="46" height="18" rx="4" fill="#F7768E"/>
+
+  <!-- Headband -->
+  <path d="M125 210 L387 210 L380 185 L132 185 Z" fill="#E0AF68"/>
+  <path d="M360 197 L420 170 L425 190 L365 217 Z" fill="#E0AF68"/>
+  <circle cx="422" cy="180" r="14" fill="#F7768E"/>
+
+  <!-- Katana handle -->
+  <rect x="360" y="340" width="100" height="16" rx="3" fill="#A9B1D6" transform="rotate(-35 410 348)"/>
+  <rect x="350" y="332" width="24" height="32" rx="4" fill="#E0AF68" transform="rotate(-35 362 348)"/>
+
+  <!-- Decorative circuit-like lines (DevOps/Tech accent) -->
+  <polyline points="80 430 110 430 125 445 160 445" fill="none" stroke="#73DACA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="432 430 402 430 387 445 352 445" fill="none" stroke="#73DACA" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
