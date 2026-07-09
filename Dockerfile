@@ -14,13 +14,17 @@ WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
-# Copy the rest of the source code.
-COPY . .
+# Copy only the source tree required to build the application.
+COPY cmd ./cmd
+COPY internal ./internal
+COPY menu.yaml ./menu.yaml
 
-# Build a static, stripped binary.
+# Build a static, stripped binary for the target platform.
+ARG TARGETOS
+ARG TARGETARCH
 ENV CGO_ENABLED=0
-ENV GOOS=linux
-ENV GOARCH=amd64
+ENV GOOS=${TARGETOS}
+ENV GOARCH=${TARGETARCH}
 
 RUN go build \
     -a \
@@ -35,13 +39,16 @@ RUN go build \
 # ------------------------------------------------------------------------------
 FROM gcr.io/distroless/static-debian12:nonroot
 
-# Copy the binary and a default menu configuration.
-COPY --from=builder --chown=nonroot:nonroot /build/ops-ronin /usr/local/bin/ops-ronin
-COPY --from=builder --chown=nonroot:nonroot /build/menu.yaml /app/menu.yaml
+# Copy the binary with explicit executable permissions and immutable ownership.
+COPY --from=builder --chown=nonroot:nonroot --chmod=755 /build/ops-ronin /usr/local/bin/ops-ronin
 
-# Explicitly run as the non-root distroless user.
+# Copy the default menu configuration as read-only.
+COPY --from=builder --chown=nonroot:nonroot --chmod=444 /build/menu.yaml /app/menu.yaml
+
+# Explicitly run as the non-root distroless user (UID 65532).
 USER nonroot:nonroot
 
+# Use a dedicated, non-writable application directory.
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/ops-ronin"]

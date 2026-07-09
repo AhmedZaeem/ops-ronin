@@ -1,5 +1,32 @@
+# Git / CI metadata
 .git
 .github
+.gitignore
+
+# Documentation
 *.md
+
+# Docker files
 Dockerfile
 .dockerignore
+
+# Local build artifacts
+ops-ronin
+ops-ronin.exe
+
+# Security / ignore files (not needed in image)
+.trivyignore
+.trivyignore.yaml
+
+# Local environment / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Editor / OS noise
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
