@@ -1,0 +1,13 @@
+# Known HIGH CVEs in github.com/docker/docker (Moby) Go SDK.
+#
+# These CVEs affect the Docker daemon/AuthZ plugin code paths. The upstream
+# advisory lists Docker Engine/Moby 29.3.1 as the patched version, but the
+# corresponding Go module tag (github.com/docker/docker@v29.3.1) has not yet
+# been published to the Go module proxy. Ops Ronin is already pinned to the
+# latest available module version (v28.5.2).
+#
+# Remove these entries once github.com/docker/docker@v29.3.1+incompatible
+# (or newer) is available and go.mod has been updated.
+CVE-2026-34040
+CVE-2026-41567
+CVE-2026-42306

@@ -1,0 +1,68 @@
+title: Ops Ronin V2
+socket: /var/run/docker.sock
+containers:
+  - name: nginx
+    label: Web Server
+    commands:
+      - name: logs
+        label: View Logs
+        action: logs
+        args: ["--tail", "100"]
+
+      - name: live-logs
+        label: Live Logs
+        action: logs-follow
+        args: ["--tail", "100"]
+
+      - name: shell
+        label: Open Shell
+        action: exec
+        command: sh
+
+      - name: status
+        label: Inspect JSON
+        action: status
+
+      - name: monitor
+        label: Resource Monitor
+        action: monitor
+
+      - name: images
+        label: List Images
+        action: images
+
+      - name: volumes
+        label: List Volumes
+        action: volumes
+
+      - name: networks
+        label: List Networks
+        action: networks
+
+      - name: restart
+        label: Restart
+        action: restart
+        dangerous: true
+
+      - name: stop
+        label: Stop
+        action: stop
+        dangerous: true
+
+  - name: postgres
+    label: Database
+    commands:
+      - name: logs
+        label: View Logs
+        action: logs
+        args: ["--tail", "50"]
+
+      - name: status
+        label: Inspect
+        action: status
+
+      - name: shell
+        label: psql Shell
+        action: exec
+        command: psql
+        args: ["-U", "postgres"]
