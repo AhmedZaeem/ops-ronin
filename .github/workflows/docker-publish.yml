@@ -49,10 +49,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Gate: fail the build on HIGH/CRIVE vulnerabilities, honouring .trivyignore.
+      # Gate: fail the build on HIGH/CRITICAL vulnerabilities, honouring .trivyignore.
       # The table format respects ignore files more reliably than SARIF.
       - name: Run Trivy vulnerability scanner (gate)
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ env.IMAGE_NAME }}:scan
           format: table
@@ -63,7 +63,7 @@ jobs:
       # Generate a SARIF report for GitHub Security tab without failing the build.
       # SARIF reports must include all severities for the codeql-action/upload-sarif.
       - name: Run Trivy vulnerability scanner (SARIF)
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: ${{ env.IMAGE_NAME }}:scan
           format: sarif
